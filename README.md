@@ -91,8 +91,39 @@ Output is printed via `echo`. Read the comments for edge cases.
 ### Algorithms
 Each `algorithms/*` file benchmarks / prints steps — see comments for complexity.
 
+## Testing — One Suite per Demo
+
+Every demo has a matching `tests/test_*.nim` using `std/unittest` (`suite`/`test`/`check`).
+
+| Test file | Covers Demo |
+|-----------|-------------|
+| `tests/test_variables.nim` | `01_basics/variables.nim:1` |
+| `tests/test_datatypes.nim` | `01_basics/datatypes.nim:1` |
+| `tests/test_operators.nim` | `01_basics/operators.nim:1` |
+| `tests/test_input_output.nim` | `01_basics/input_output.nim:1` |
+| `tests/test_control_flow.nim` | `02_control_flow/if_when_case.nim:1`, `loops.nim:1`, `iterators.nim:1` |
+| `tests/test_hello_values.nim` | `basic/hello.nim:1`, `basic/Values.nim:1` |
+| `tests/all_tests.nim` | aggregator (all suites) |
+
+Run:
+
+```bash
+# Single suite (verbose [OK] per test)
+nim c -r tests/test_variables.nim
+nim c -r tests/test_datatypes.nim
+nim c -r tests/test_control_flow.nim
+
+# All suites via Nimble (recommended)
+nimble test
+
+# Aggregator
+nim c -r tests/all_tests.nim
+```
+
+All suites currently pass with Nim 2.2.4 (`[OK]` for ~35 tests). When adding a new demo, add a matching `tests/test_your_demo.nim` and register it in `Nim.nimble:13` `task test`.
+
 ## Contributing
-Add a new demo as `XX_topic/your_demo.nim` with header comment and ensure `nim c -r` passes.
+Add a new demo as `XX_topic/your_demo.nim` with header comment and ensure `nim c -r` and `nimble test` pass.
 
 ## License
 MIT
