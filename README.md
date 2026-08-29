@@ -70,26 +70,32 @@ Output is printed via `echo`. Read the comments for edge cases.
 ### Procedures & Collections
 | File | Concepts |
 |------|----------|
-| `03_procedures/procs.nim` | `proc`/`func`, default args, overloading, `discard` |
-| `03_procedures/closures_hof.nim` | closures, anonymous `proc`, `map`/`filter` |
-| `04_collections/collections.nim` | `array`, `seq`, `Table`, `HashSet`, `tuple`, `string` |
+| `03_procedures/procs.nim` | `proc`/`func`, default args, overloading, `var` params, recursion |
+| `03_procedures/closures_hof.nim` | closures, `=>`, `map`/`filter`/`foldl`, mutual recursion |
+| `04_collections/collections.nim` | `array`, `seq`, `Table`/`OrderedTable`, `HashSet`, `tuple`, `sequtils` |
+| `05_types/objects.nim` | `object`, `ref object`, `enum`, `distinct`, `variant`, `Option` |
+| `06_oop/oop.nim` | `ref object of RootObj`, `method` dispatch, `of`, `concept Drawable` |
+| `07_generics_metaprogramming/metaprogramming.nim` | generics `Stack[T]`, `concept Addable`, `static`, `template`, `macro debug` |
+| `08_error_handling/exceptions.nim` | `try`/`except`/`finally`, `defer`, `Option`/`Result`, `doAssert` |
+| `09_modules/modules_demo.nim` | `import`/`from`/`as`, `when defined(debug)`, `math_utils` local module |
+| `10_file_io/file_io.nim` | `writeFile`/`lines`, `json`, `parseopt`, `os`/`getTempDir` |
+| `11_concurrency/concurrency.nim` | `asyncdispatch`/`await`/`all`, `Channel`, `threadpool`/`Thread` |
 
-### Types / OOP / Metaprogramming
-| File | Concepts |
-|------|----------|
-| `05_types/objects.nim` | `object`, `ref object`, `enum`, `distinct`, `variant` |
-| `06_oop/oop.nim` | inheritance (`of`), `method` dispatch, `concept` |
-| `07_generics_metaprogramming/metaprogramming.nim` | generics, `template`, `macro`, `static` |
+### Algorithms (complexity in comments)
+| File | What it shows |
+|------|---------------|
+| `algorithms/sorting/sorting.nim` | bubble O(n²), insertion O(n²), selection O(n²), quick O(n log n), merge O(n log n), `algorithm.sort` |
+| `algorithms/searching/searching.nim` | linear O(n), binary O(log n), lowerBound, KMP naive, jump search |
+| `algorithms/graph/graph.nim` | BFS/DFS, Dijkstra O((V+E) log V), topological sort (Kahn) |
+| `algorithms/dynamic_programming/dp.nim` | fib memo/iter, knapsack O(nW), LCS, coin change, edit distance |
+| `algorithms/math/math.nim` | gcd/lcm, sieve, `isPrime`, `factorize`, `modPow`, `nCr` |
+| `algorithms/strings/strings.nim` | palindrome, `isAnagram`, KMP O(n+m), longestPal, `wordCount`, RLE |
 
-### Systems
-| File | Concepts |
-|------|----------|
-| `08_error_handling/exceptions.nim` | `try`/`except`/`finally`, `defer`, `Option` |
-| `10_file_io/file_io.nim` | read/write, JSON, `os`, `parseopt` |
-| `11_concurrency/concurrency.nim` | `threadpool`, `asyncdispatch`, `channels` |
-
-### Algorithms
-Each `algorithms/*` file benchmarks / prints steps — see comments for complexity.
+### Examples
+| File | What it shows |
+|------|---------------|
+| `examples/cli_todo.nim` | `parseopt` + JSON persistence, `isMainModule`, CRUD CLI |
+| `examples/http_server.nim` | `asynchttpserver` routes `/`, `/json`, `/hello?name=`, `async` handler |
 
 ## Testing — One Suite per Demo
 
@@ -103,7 +109,23 @@ Every demo has a matching `tests/test_*.nim` using `std/unittest` (`suite`/`test
 | `tests/test_input_output.nim` | `01_basics/input_output.nim:1` |
 | `tests/test_control_flow.nim` | `02_control_flow/if_when_case.nim:1`, `loops.nim:1`, `iterators.nim:1` |
 | `tests/test_hello_values.nim` | `basic/hello.nim:1`, `basic/Values.nim:1` |
-| `tests/all_tests.nim` | aggregator (all suites) |
+| `tests/test_procs.nim` | `03_procedures/procs.nim:1`, `closures_hof.nim:1` |
+| `tests/test_collections.nim` | `04_collections/collections.nim:1` |
+| `tests/test_types.nim` | `05_types/objects.nim:1` |
+| `tests/test_oop.nim` | `06_oop/oop.nim:1` |
+| `tests/test_metaprogramming.nim` | `07_generics_metaprogramming/metaprogramming.nim:1` |
+| `tests/test_exceptions.nim` | `08_error_handling/exceptions.nim:1` |
+| `tests/test_modules.nim` | `09_modules/math_utils.nim:1`, `modules_demo.nim:1` |
+| `tests/test_file_io.nim` | `10_file_io/file_io.nim:1` |
+| `tests/test_concurrency.nim` | `11_concurrency/concurrency.nim:1` |
+| `tests/test_sorting.nim` | `algorithms/sorting/sorting.nim:1` |
+| `tests/test_searching.nim` | `algorithms/searching/searching.nim:1` |
+| `tests/test_graph.nim` | `algorithms/graph/graph.nim:1` |
+| `tests/test_dp.nim` | `algorithms/dynamic_programming/dp.nim:1` |
+| `tests/test_math.nim` | `algorithms/math/math.nim:1` |
+| `tests/test_strings.nim` | `algorithms/strings/strings.nim:1` |
+| `tests/test_examples.nim` | `examples/cli_todo.nim:1`, `http_server.nim:1` |
+| `tests/all_tests.nim` | aggregator (22 suites, 150+ tests) |
 
 Run:
 
@@ -120,7 +142,7 @@ nimble test
 nim c -r tests/all_tests.nim
 ```
 
-All suites currently pass with Nim 2.2.4 (`[OK]` for ~35 tests). When adding a new demo, add a matching `tests/test_your_demo.nim` and register it in `Nim.nimble:13` `task test`.
+All 22 suites pass with Nim 2.2.4 (`[OK]` for ~150 tests). When adding a new demo, add a matching `tests/test_your_demo.nim` and register it in `Nim.nimble:11` `task test`.
 
 ## Contributing
 Add a new demo as `XX_topic/your_demo.nim` with header comment and ensure `nim c -r` and `nimble test` pass.
